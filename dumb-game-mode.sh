@@ -172,24 +172,24 @@ start_vkcheck() {
 
 
 #--------------------------------------------------------------------------------
-# Notify native Wine D3DX/D3DCompiler
+# Notify builtin Wine D3DX/D3DCompiler
 #--------------------------------------------------------------------------------
 start_dxcheck() {
   # lsof: find opened *.dll/*.dll.so
-  # awk: check each *.exe for native d3dx/d3dcompiler dlls
+  # awk: check each *.exe for builtin d3dx/d3dcompiler dlls
   report=$(lsof -nPT -u ${USER} +c 15  | grep -E '\.dll\.so' \
     | awk '
     function reset()  { d3dx = 0; d3dc = 0; list_d3dx = ""; list_d3dc = ""; }
     function found()  { return d3dx + d3dc; }
     function report() {
       if(found()) {
-        out = "Wine native libs for <b>" cur_exe "</b>:\n";
+        out = "Wine builtin libs for <b>" cur_exe "</b>:\n";
         if (d3dc) out = out "" list_d3dc "\n";
         if (d3dx) out = out "" list_d3dx "\n";
-        print out; native=1;
+        print out; builtin=1;
       }
     } BEGIN {
-      native=0; cur_exe=""; d3dx=0; d3dc=0; list_d3dx = ""; list_d3dc = "";
+      builtin=0; cur_exe=""; d3dx=0; d3dc=0; list_d3dx = ""; list_d3dc = "";
     } {
       if (cur_exe == "") cur_exe = $1
       if (cur_exe != $1) { report(); reset(); cur_exe = $1; }
