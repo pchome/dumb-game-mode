@@ -138,6 +138,26 @@ dpms_on() {
 
 
 #--------------------------------------------------------------------------------
+# KWin compositing off
+#--------------------------------------------------------------------------------
+kwin_composit_off() {
+  [ $(which kwriteconfig5) && $(which kwin_x11)] \
+    && kwriteconfig5 --file kwinrc --group Compositing --key Enabled false \
+    && kwin_x11 --replace &
+}
+
+
+#--------------------------------------------------------------------------------
+# KWin compositing on
+#--------------------------------------------------------------------------------
+kwin_composit_on() {
+  [ $(which kwriteconfig5) && $(which kwin_x11)] \
+    && kwriteconfig5 --file kwinrc --group Compositing --key Enabled true \
+    && kwin_x11 --replace &
+}
+
+
+#--------------------------------------------------------------------------------
 # Notify mixed graphic APIs for DXVK/D9VK/NvAPI/OpenGL/...
 #--------------------------------------------------------------------------------
 start_vkcheck() {
